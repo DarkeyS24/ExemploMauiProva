@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MobileApp.Views.LoginPage"
+             Title="Login"
+             BackgroundColor="#F8F9FA">
+
+    <ScrollView>
+        <Grid Padding="30,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <!-- Conteúdo Principal -->
+            <StackLayout Grid.Row="1" Spacing="25" VerticalOptions="Center">
+                
+                <!-- Logo e Título -->
+                <StackLayout Spacing="15" Margin="0,0,0,40">
+                    <Label Text="🌉"
+                           FontSize="60"
+                           HorizontalOptions="Center" />
+                    <Label Text="Ponte Dourada"
+                           FontSize="32"
+                           FontAttributes="Bold"
+                           TextColor="#D4AF37"
+                           HorizontalOptions="Center" />
+                    <Label Text="Sistema de Atendimento"
+                           FontSize="16"
+                           TextColor="#6C757D"
+                           HorizontalOptions="Center" />
+                </StackLayout>
+
+                <!-- Formulário de Login -->
+                <StackLayout x:Name="LoginForm" Spacing="20">
+                    
+                    <!-- Campo Login -->
+                    <StackLayout Spacing="8">
+                        <Label Text="Login" 
+                               FontSize="14" 
+                               FontAttributes="Bold" 
+                               TextColor="#495057" />
+                        <Frame BackgroundColor="White" 
+                               HasShadow="False" 
+                               CornerRadius="12" 
+                               Padding="0"
+                               BorderColor="#E9ECEF">
+                            <Entry x:Name="EntryLogin"
+                                   Placeholder="Digite seu login"
+                                   FontSize="16"
+                                   TextColor="#212529"
+                                   PlaceholderColor="#ADB5BD"
+                                   Keyboard="Email" />
+                        </Frame>
+                    </StackLayout>
+
+                    <!-- Campo Senha -->
+                    <StackLayout Spacing="8">
+                        <Label Text="Senha" 
+                               FontSize="14" 
+                               FontAttributes="Bold" 
+                               TextColor="#495057" />
+                        <Frame BackgroundColor="White" 
+                               HasShadow="False" 
+                               CornerRadius="12" 
+                               Padding="0"
+                               BorderColor="#E9ECEF">
+                            <Entry x:Name="EntrySenha"
+                                   Placeholder="Digite sua senha"
+                                   IsPassword="True"
+                                   FontSize="16"
+                                   TextColor="#212529"
+                                   PlaceholderColor="#ADB5BD" />
+                        </Frame>
+                    </StackLayout>
+
+                    <!-- Checkbox Mantenha-me Conectado -->
+                    <StackLayout Orientation="Horizontal" Spacing="10" Margin="0,10,0,0">
+                        <CheckBox x:Name="CheckBoxMantenhaConectado" 
+                                  Color="#D4AF37" />
+                        <Label Text="Mantenha-me conectado" 
+                               FontSize="14" 
+                               TextColor="#495057"
+                               VerticalOptions="Center" />
+                    </StackLayout>
+
+                    <!-- Botão Login -->
+                    <Button x:Name="BtnLogin"
+                            Text="Entrar"
+                            FontSize="18"
+                            FontAttributes="Bold"
+                            BackgroundColor="#D4AF37"
+                            TextColor="White"
+                            CornerRadius="12"
+                            HeightRequest="55"
+                            Clicked="OnLoginClicked" />
+
+                    <!-- Indicador de Loading -->
+                    <ActivityIndicator x:Name="LoadingIndicator" 
+                                     IsVisible="False" 
+                                     IsRunning="False"
+                                     Color="#D4AF37"
+                                     HeightRequest="30" />
+
+                </StackLayout>
+
+                <!-- Formulário de PIN -->
+                <StackLayout x:Name="PinForm" 
+                           IsVisible="False" 
+                           Spacing="20">
+                    
+                    <Label Text="Autenticação de Segurança"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           TextColor="#495057"
+                           HorizontalOptions="Center" />
+                    
+                    <Label x:Name="LblPinInstrucao"
+                           Text="Digite o PIN de 3 dígitos exibido abaixo:"
+                           FontSize="14"
+                           TextColor="#6C757D"
+                           HorizontalOptions="Center" />
+                    
+                    <!-- Exibição do PIN -->
+                    <Frame BackgroundColor="#E3F2FD" 
+                           CornerRadius="12" 
+                           Padding="20"
+                           BorderColor="#2196F3"
+                           HasShadow="False">
+                        <Label x:Name="LblPinGerado"
+                               FontSize="36"
+                               FontAttributes="Bold"
+                               TextColor="#1976D2"
+                               HorizontalOptions="Center" />
+                    </Frame>
+                    
+                    <!-- Campo PIN -->
+                    <StackLayout Spacing="8">
+                        <Label Text="Digite o PIN" 
+                               FontSize="14" 
+                               FontAttributes="Bold" 
+                               TextColor="#495057"
+                               HorizontalOptions="Center" />
+                        <Frame BackgroundColor="White" 
+                               HasShadow="False" 
+                               CornerRadius="12" 
+                               Padding="0"
+                               BorderColor="#E9ECEF"
+                               WidthRequest="120"
+                               HorizontalOptions="Center">
+                            <Entry x:Name="EntryPin"
+                                   Placeholder="PIN"
+                                   FontSize="24"
+                                   FontAttributes="Bold"
+                                   TextColor="#212529"
+                                   PlaceholderColor="#ADB5BD"
+                                   Keyboard="Numeric"
+                                   MaxLength="3"
+                                   HorizontalTextAlignment="Center" />
+                        </Frame>
+                    </StackLayout>
+
+                    <!-- Botões PIN -->
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="15">
+                        <Button Grid.Column="0"
+                                x:Name="BtnVoltarPin"
+                                Text="Voltar"
+                                FontSize="16"
+                                BackgroundColor="#6C757D"
+                                TextColor="White"
+                                CornerRadius="12"
+                                HeightRequest="50"
+                                Clicked="OnVoltarPinClicked" />
+                        
+                        <Button Grid.Column="1"
+                                x:Name="BtnConfirmarPin"
+                                Text="Confirmar"
+                                FontSize="16"
+                                BackgroundColor="#28A745"
+                                TextColor="White"
+                                CornerRadius="12"
+                                HeightRequest="50"
+                                Clicked="OnConfirmarPinClicked" />
+                    </Grid>
+
+                </StackLayout>
+
+                <!-- Informações de Teste -->
+                <StackLayout Margin="0,30,0,0" Spacing="5">
+                    <Label Text="👥 Usuários de Teste:"
+                           FontSize="14"
+                           FontAttributes="Bold"
+                           TextColor="#495057"
+                           HorizontalOptions="Center" />
+                    <Label Text="Cuidador: joao.silva / 123456"
+                           FontSize="12"
+                           TextColor="#6C757D"
+                           HorizontalOptions="Center" />
+                    <Label Text="Paciente: maria.santos / 123456"
+                           FontSize="12"
+                           TextColor="#6C757D"
+                           HorizontalOptions="Center" />
+                </StackLayout>
+
+            </StackLayout>
+        </Grid>
+    </ScrollView>
+
+</ContentPage>

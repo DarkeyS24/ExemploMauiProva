@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MobileApp.Views.CalendarioAtendimentosPage"
+             Title="Atendimentos Cuidador">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Cabeçalho -->
+        <Grid Grid.Row="0" BackgroundColor="#2196F3" Padding="15,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0"
+                    x:Name="BtnVoltar"
+                    Text="← Voltar"
+                    BackgroundColor="Transparent"
+                    TextColor="White"
+                    FontSize="16"
+                    Clicked="OnVoltarClicked" />
+
+            <Label Grid.Column="1"
+                   x:Name="LblTitulo"
+                   Text="Atendimentos Cuidador - João Silva"
+                   TextColor="White"
+                   FontSize="18"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center" />
+        </Grid>
+
+        <!-- Seletor de Paciente -->
+        <Grid Grid.Row="1" Padding="15,10" BackgroundColor="#F5F5F5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Column="0"
+                   Text="Paciente:"
+                   FontSize="16"
+                   VerticalOptions="Center"
+                   Margin="0,0,10,0" />
+
+            <Picker Grid.Column="1"
+                    x:Name="PickerPaciente"
+                    ItemsSource="{Binding Pacientes}"
+                    ItemDisplayBinding="{Binding NomeCompleto}"
+                    SelectedItem="{Binding PacienteSelecionado}"
+                    FontSize="16"
+                    BackgroundColor="White" />
+        </Grid>
+
+        <!-- Calendário -->
+        <ScrollView Grid.Row="2" Padding="15">
+            <StackLayout>
+                <!-- Navegação do Mês -->
+                <Grid Margin="0,0,0,20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <Button Grid.Column="0"
+                            x:Name="BtnMesAnterior"
+                            Text="◀"
+                            FontSize="20"
+                            BackgroundColor="#2196F3"
+                            TextColor="White"
+                            WidthRequest="50"
+                            HeightRequest="40"
+                            Clicked="OnMesAnteriorClicked" />
+
+                    <Label Grid.Column="1"
+                           x:Name="LblMesAno"
+                           Text="Agosto 2025"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center" />
+
+                    <Button Grid.Column="2"
+                            x:Name="BtnProximoMes"
+                            Text="▶"
+                            FontSize="20"
+                            BackgroundColor="#2196F3"
+                            TextColor="White"
+                            WidthRequest="50"
+                            HeightRequest="40"
+                            Clicked="OnProximoMesClicked" />
+                </Grid>
+
+                <!-- Cabeçalho dos Dias da Semana -->
+                <Grid x:Name="GridDiasSemana" Margin="0,0,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Column="0" Text="SEG" FontAttributes="Bold" FontSize="14" HorizontalOptions="Center" />
+                    <Label Grid.Column="1" Text="TER" FontAttributes="Bold" FontSize="14" HorizontalOptions="Center" />
+                    <Label Grid.Column="2" Text="QUA" FontAttributes="Bold" FontSize="14" HorizontalOptions="Center" />
+                    <Label Grid.Column="3" Text="QUI" FontAttributes="Bold" FontSize="14" HorizontalOptions="Center" />
+                    <Label Grid.Column="4" Text="SEX" FontAttributes="Bold" FontSize="14" HorizontalOptions="Center" />
+                    <Label Grid.Column="5" Text="SAB" FontAttributes="Bold" FontSize="14" HorizontalOptions="Center" />
+                    <Label Grid.Column="6" Text="DOM" FontAttributes="Bold" FontSize="14" HorizontalOptions="Center" />
+                </Grid>
+
+                <!-- Grid do Calendário -->
+                <Grid x:Name="GridCalendario">
+                    <!-- Será preenchido dinamicamente no código -->
+                </Grid>
+
+                <!-- Legenda -->
+                <StackLayout Margin="0,20,0,0">
+                    <Label Text="Legenda:" FontSize="16" FontAttributes="Bold" Margin="0,0,0,10" />
+                    
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <StackLayout Grid.Column="0" Orientation="Horizontal" Margin="0,5">
+                            <Frame BackgroundColor="#4CAF50" WidthRequest="20" HeightRequest="20" CornerRadius="10" Margin="0,0,10,0" />
+                            <Label Text="Data Passada" FontSize="12" VerticalOptions="Center" />
+                        </StackLayout>
+
+                        <StackLayout Grid.Column="1" Orientation="Horizontal" Margin="0,5">
+                            <Frame BackgroundColor="#FF9800" WidthRequest="20" HeightRequest="20" CornerRadius="10" Margin="0,0,10,0" />
+                            <Label Text="Data Atual" FontSize="12" VerticalOptions="Center" />
+                        </StackLayout>
+
+                        <StackLayout Grid.Column="2" Orientation="Horizontal" Margin="0,5">
+                            <Frame BackgroundColor="#2196F3" WidthRequest="20" HeightRequest="20" CornerRadius="10" Margin="0,0,10,0" />
+                            <Label Text="Data Futura" FontSize="12" VerticalOptions="Center" />
+                        </StackLayout>
+                    </Grid>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </Grid>
+
+</ContentPage>
