@@ -23,4 +23,9 @@
         ContentTemplate="{DataTemplate views:CalendarioAtendimentosPage}"
         Route="CalendarioAtendimentos" />
 
+    <ShellContent
+        Title="Meus Atendimentos"
+        ContentTemplate="{DataTemplate views:MeusAtendimentosPage}"
+        Route="MeusAtendimentos" />
+
 </Shell>

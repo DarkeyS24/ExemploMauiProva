@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converters="clr-namespace:MobileApp.Converters"
+             x:Class="MobileApp.Views.MeusAtendimentosPage"
+             Title="Meus Atendimentos">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:IsNotNullConverter x:Key="IsNotNullConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Cabeçalho -->
+        <Grid Grid.Row="0" BackgroundColor="#D4AF37" Padding="15,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0"
+                    x:Name="BtnVoltar"
+                    Text="← Sair"
+                    BackgroundColor="Transparent"
+                    TextColor="White"
+                    FontSize="16"
+                    Clicked="OnSairClicked" />
+
+            <Label Grid.Column="1"
+                   x:Name="LblTitulo"
+                   Text="Atendimentos Paciente - Maria Santos"
+                   TextColor="White"
+                   FontSize="18"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center" />
+
+            <Button Grid.Column="2"
+                    x:Name="BtnDesconectar"
+                    Text="⚙️"
+                    BackgroundColor="Transparent"
+                    TextColor="White"
+                    FontSize="18"
+                    Clicked="OnDesconectarClicked" />
+        </Grid>
+
+        <!-- Filtros -->
+        <Grid Grid.Row="1" Padding="15,10" BackgroundColor="#F5F5F5" RowDefinitions="Auto,Auto">
+            
+            <!-- Primeira linha de filtros -->
+            <Grid Grid.Row="0" ColumnDefinitions="*,*" ColumnSpacing="10" Margin="0,0,0,10">
+                <!-- Filtro Procedimento -->
+                <StackLayout Grid.Column="0" Spacing="5">
+                    <Label Text="Procedimento:" FontSize="14" FontAttributes="Bold" TextColor="#495057" />
+                    <Picker x:Name="PickerProcedimento"
+                            ItemsSource="{Binding Procedimentos}"
+                            ItemDisplayBinding="{Binding Nome}"
+                            SelectedItem="{Binding ProcedimentoSelecionado}"
+                            FontSize="14"
+                            BackgroundColor="White" />
+                </StackLayout>
+
+                <!-- Filtro Cuidador -->
+                <StackLayout Grid.Column="1" Spacing="5">
+                    <Label Text="Cuidador:" FontSize="14" FontAttributes="Bold" TextColor="#495057" />
+                    <Picker x:Name="PickerCuidador"
+                            ItemsSource="{Binding Cuidadores}"
+                            ItemDisplayBinding="{Binding Nome}"
+                            SelectedItem="{Binding CuidadorSelecionado}"
+                            FontSize="14"
+                            BackgroundColor="White" />
+                </StackLayout>
+            </Grid>
+
+            <!-- Segunda linha - Botão limpar filtros -->
+            <Button Grid.Row="1"
+                    x:Name="BtnLimparFiltros"
+                    Text="Limpar Filtros"
+                    FontSize="14"
+                    BackgroundColor="#6C757D"
+                    TextColor="White"
+                    CornerRadius="8"
+                    HeightRequest="35"
+                    Clicked="OnLimparFiltrosClicked" />
+        </Grid>
+
+        <!-- Conteúdo Principal -->
+        <ScrollView Grid.Row="2" Padding="15">
+            <StackLayout Spacing="20">
+                
+                <!-- Navegação do Mês -->
+                <Grid Margin="0,0,0,20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <Button Grid.Column="0"
+                            x:Name="BtnMesAnterior"
+                            Text="◀"
+                            FontSize="20"
+                            BackgroundColor="#D4AF37"
+                            TextColor="White"
+                            WidthRequest="50"
+                            HeightRequest="40"
+                            Clicked="OnMesAnteriorClicked" />
+
+                    <Label Grid.Column="1"
+                           x:Name="LblMesAno"
+                           Text="Agosto 2025"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center" />
+
+                    <Button Grid.Column="2"
+                            x:Name="BtnProximoMes"
+                            Text="▶"
+                            FontSize="20"
+                            BackgroundColor="#D4AF37"
+                            TextColor="White"
+                            WidthRequest="50"
+                            HeightRequest="40"
+                            Clicked="OnProximoMesClicked" />
+                </Grid>
+
+                <!-- Cabeçalho dos Dias da Semana -->
+                <Grid x:Name="GridDiasSemana" Margin="0,0,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Column="0" Text="SEG" FontAttributes="Bold" FontSize="14" HorizontalOptions="Center" />
+                    <Label Grid.Column="1" Text="TER" FontAttributes="Bold" FontSize="14" HorizontalOptions="Center" />
+                    <Label Grid.Column="2" Text="QUA" FontAttributes="Bold" FontSize="14" HorizontalOptions="Center" />
+                    <Label Grid.Column="3" Text="QUI" FontAttributes="Bold" FontSize="14" HorizontalOptions="Center" />
+                    <Label Grid.Column="4" Text="SEX" FontAttributes="Bold" FontSize="14" HorizontalOptions="Center" />
+                    <Label Grid.Column="5" Text="SAB" FontAttributes="Bold" FontSize="14" HorizontalOptions="Center" />
+                    <Label Grid.Column="6" Text="DOM" FontAttributes="Bold" FontSize="14" HorizontalOptions="Center" />
+                </Grid>
+
+                <!-- Grid do Calendário -->
+                <Grid x:Name="GridCalendario">
+                    <!-- Será preenchido dinamicamente no código -->
+                </Grid>
+
+                <!-- Legenda -->
+                <StackLayout Margin="0,20,0,0">
+                    <Label Text="Legenda:" FontSize="16" FontAttributes="Bold" Margin="0,0,0,10" />
+                    
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <StackLayout Grid.Column="0" Orientation="Horizontal" Margin="0,5">
+                            <Frame BackgroundColor="#4CAF50" WidthRequest="20" HeightRequest="20" CornerRadius="10" Margin="0,0,10,0" />
+                            <Label Text="Data Passada" FontSize="12" VerticalOptions="Center" />
+                        </StackLayout>
+
+                        <StackLayout Grid.Column="1" Orientation="Horizontal" Margin="0,5">
+                            <Frame BackgroundColor="#FF9800" WidthRequest="20" HeightRequest="20" CornerRadius="10" Margin="0,0,10,0" />
+                            <Label Text="Data Atual" FontSize="12" VerticalOptions="Center" />
+                        </StackLayout>
+
+                        <StackLayout Grid.Column="2" Orientation="Horizontal" Margin="0,5">
+                            <Frame BackgroundColor="#2196F3" WidthRequest="20" HeightRequest="20" CornerRadius="10" Margin="0,0,10,0" />
+                            <Label Text="Data Futura" FontSize="12" VerticalOptions="Center" />
+                        </StackLayout>
+                    </Grid>
+                </StackLayout>
+
+                <!-- Lista de Atendimentos do Dia Selecionado -->
+                <StackLayout x:Name="StackDetalhesAtendimentos" IsVisible="False" Margin="0,20,0,0">
+                    <Label x:Name="LblTituloDetalhes"
+                           Text="Atendimentos do Dia - 25/08/2025"
+                           FontSize="18"
+                           FontAttributes="Bold"
+                           TextColor="#495057"
+                           Margin="0,0,0,15" />
+
+                    <CollectionView x:Name="CollectionAtendimentos">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Padding="0,5">
+                                    <Frame BackgroundColor="White" 
+                                           CornerRadius="12" 
+                                           HasShadow="True" 
+                                           Padding="15"
+                                           BorderColor="#E9ECEF">
+                                        
+                                        <Grid RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="*,Auto">
+                                            
+                                            <!-- Informações principais -->
+                                            <StackLayout Grid.Row="0" Grid.Column="0" Spacing="5">
+                                                <Label Text="{Binding Cuidador.Nome}" 
+                                                       FontSize="16" 
+                                                       FontAttributes="Bold" 
+                                                       TextColor="#212529" />
+                                                
+                                                <Label Text="{Binding Procedimento.Nome}" 
+                                                       FontSize="14" 
+                                                       TextColor="#495057" />
+                                                
+                                                <Label Text="{Binding HorarioFormatado}" 
+                                                       FontSize="14" 
+                                                       TextColor="#6C757D" />
+                                            </StackLayout>
+
+                                            <!-- Status -->
+                                            <Label Grid.Row="0" Grid.Column="1"
+                                                   Text="{Binding Status}"
+                                                   FontSize="12"
+                                                   FontAttributes="Bold"
+                                                   TextColor="White"
+                                                   BackgroundColor="#28A745"
+                                                   Padding="8,4"
+                                                   VerticalOptions="Start"
+                                                   HorizontalOptions="End" />
+
+                                            <!-- Avaliação (se existir) -->
+                                            <StackLayout Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" 
+                                                       IsVisible="{Binding Avaliacao, Converter={StaticResource IsNotNullConverter}}"
+                                                       Orientation="Horizontal" 
+                                                       Spacing="10" 
+                                                       Margin="0,10,0,0">
+                                                <Label Text="⭐" FontSize="16" />
+                                                <Label Text="{Binding Avaliacao.Nota}" FontSize="14" FontAttributes="Bold" />
+                                                <Label Text="{Binding Avaliacao.Comentario}" FontSize="12" TextColor="#6C757D" />
+                                            </StackLayout>
+
+                                            <!-- Botões de Ação -->
+                                            <StackLayout Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" 
+                                                       Orientation="Horizontal" 
+                                                       Spacing="10" 
+                                                       Margin="0,15,0,0">
+                                                
+                                                <!-- Botão Cancelar -->
+                                                <Button Text="Cancelar"
+                                                        FontSize="12"
+                                                        BackgroundColor="#DC3545"
+                                                        TextColor="White"
+                                                        CornerRadius="8"
+                                                        Padding="15,5"
+                                                        IsVisible="{Binding PodeSerCancelado}"
+                                                        Clicked="OnCancelarAtendimentoClicked"
+                                                        CommandParameter="{Binding Id}" />
+
+                                                <!-- Botão Avaliar -->
+                                                <Button Text="Avaliar"
+                                                        FontSize="12"
+                                                        BackgroundColor="#FFC107"
+                                                        TextColor="White"
+                                                        CornerRadius="8"
+                                                        Padding="15,5"
+                                                        IsVisible="{Binding PodeSerAvaliado}"
+                                                        Clicked="OnAvaliarAtendimentoClicked"
+                                                        CommandParameter="{Binding Id}" />
+                                            </StackLayout>
+                                        </Grid>
+                                    </Frame>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                    <!-- Mensagem quando não há atendimentos -->
+                    <StackLayout x:Name="StackSemAtendimentos" IsVisible="False" Spacing="10" Margin="0,20">
+                        <Label Text="📅"
+                               FontSize="40"
+                               HorizontalOptions="Center" />
+                        <Label Text="Nenhuma consulta marcada"
+                               FontSize="16"
+                               FontAttributes="Bold"
+                               TextColor="#6C757D"
+                               HorizontalOptions="Center" />
+                    </StackLayout>
+                </StackLayout>
+
+            </StackLayout>
+        </ScrollView>
+    </Grid>
+
+</ContentPage>

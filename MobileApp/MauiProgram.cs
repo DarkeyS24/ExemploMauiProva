@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using MobileApp.Services;
 
 namespace MobileApp
 {
@@ -14,6 +15,10 @@ namespace MobileApp
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
+
+            // Registrar serviços
+            builder.Services.AddSingleton<AuthenticationService>();
+            builder.Services.AddSingleton<AtendimentoService>();
 
 #if DEBUG
     		builder.Logging.AddDebug();

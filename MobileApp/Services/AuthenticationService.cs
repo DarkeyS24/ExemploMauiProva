@@ -129,9 +129,10 @@ namespace MobileApp.Services
             }
         }
 
-        public async Task LimparUsuarioSalvoAsync()
+        public Task LimparUsuarioSalvoAsync()
         {
             SecureStorage.RemoveAll();
+            return Task.CompletedTask;
         }
 
         public async Task DesabilitarMantenhaConectadoAsync()

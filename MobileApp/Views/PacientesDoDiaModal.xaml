@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MobileApp.Views.PacientesDoDiaModal"
+             Title="Pacientes do Dia"
+             BackgroundColor="#80000000">
+
+    <Grid>
+        <Frame BackgroundColor="White" 
+               CornerRadius="20" 
+               Margin="20,100,20,100" 
+               Padding="0"
+               HasShadow="True">
+            
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <!-- Cabeçalho -->
+                <Grid Grid.Row="0" BackgroundColor="#2196F3" Padding="20,15">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Column="0"
+                           x:Name="LblTitulo"
+                           Text="Pacientes - 25/08/2025"
+                           FontSize="18"
+                           FontAttributes="Bold"
+                           TextColor="White"
+                           VerticalOptions="Center" />
+
+                    <Button Grid.Column="1"
+                            x:Name="BtnFechar"
+                            Text="✕"
+                            FontSize="20"
+                            BackgroundColor="Transparent"
+                            TextColor="White"
+                            WidthRequest="40"
+                            HeightRequest="40"
+                            Clicked="OnFecharClicked" />
+                </Grid>
+
+                <!-- Conteúdo -->
+                <ScrollView Grid.Row="1" Padding="0">
+                    <StackLayout x:Name="StackConteudo">
+                        
+                        <!-- Carrossel de Pacientes -->
+                        <CarouselView x:Name="CarouselPacientes"
+                                      HeightRequest="400"
+                                      IndicatorView="IndicatorView"
+                                      BackgroundColor="Transparent">
+                            <CarouselView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Padding="20">
+                                        <Frame BackgroundColor="#F8F9FA" 
+                                               CornerRadius="15" 
+                                               Padding="20"
+                                               HasShadow="False"
+                                               BorderColor="#E9ECEF">
+                                            
+                                            <StackLayout Spacing="15">
+                                                <!-- Foto -->
+                                                <Label Text="{Binding Paciente.FotoUrl}"
+                                                       FontSize="60"
+                                                       HorizontalOptions="Center" />
+
+                                                <!-- Nome -->
+                                                <Label Text="{Binding Paciente.NomeCompleto}"
+                                                       FontSize="20"
+                                                       FontAttributes="Bold"
+                                                       TextColor="#212529"
+                                                       HorizontalOptions="Center" />
+
+                                                <!-- Informações -->
+                                                <Grid RowDefinitions="Auto,Auto,Auto,Auto" 
+                                                      ColumnDefinitions="Auto,*"
+                                                      RowSpacing="8">
+                                                    
+                                                    <Label Grid.Row="0" Grid.Column="0" Text="Procedimento:" FontAttributes="Bold" TextColor="#495057" />
+                                                    <Label Grid.Row="0" Grid.Column="1" Text="{Binding Procedimento.Nome}" TextColor="#6C757D" />
+                                                    
+                                                    <Label Grid.Row="1" Grid.Column="0" Text="Horário:" FontAttributes="Bold" TextColor="#495057" />
+                                                    <Label Grid.Row="1" Grid.Column="1" Text="{Binding HorarioFormatado}" TextColor="#6C757D" />
+                                                    
+                                                    <Label Grid.Row="2" Grid.Column="0" Text="Nascimento:" FontAttributes="Bold" TextColor="#495057" />
+                                                    <Label Grid.Row="2" Grid.Column="1" Text="{Binding Paciente.DataNascimentoFormatada}" TextColor="#6C757D" />
+                                                    
+                                                    <Label Grid.Row="3" Grid.Column="0" Text="Idade:" FontAttributes="Bold" TextColor="#495057" />
+                                                    <Label Grid.Row="3" Grid.Column="1" Text="{Binding Paciente.Idade}" TextColor="#6C757D" />
+                                                </Grid>
+
+                                                <!-- Resumo -->
+                                                <Frame BackgroundColor="#E3F2FD" 
+                                                       CornerRadius="10" 
+                                                       Padding="15"
+                                                       HasShadow="False">
+                                                    <StackLayout Spacing="5">
+                                                        <Label Text="Resumo do Paciente"
+                                                               FontSize="14"
+                                                               FontAttributes="Bold"
+                                                               TextColor="#1976D2" />
+                                                        <Label Text="{Binding Paciente.Resumo}"
+                                                               FontSize="12"
+                                                               TextColor="#1976D2"
+                                                               LineBreakMode="WordWrap" />
+                                                    </StackLayout>
+                                                </Frame>
+
+                                                <!-- Status -->
+                                                <Label Text="{Binding Status}"
+                                                       FontSize="14"
+                                                       FontAttributes="Bold"
+                                                       TextColor="#28A745"
+                                                       HorizontalOptions="Center"
+                                                       Padding="10,5"
+                                                       BackgroundColor="#D4EDDA" />
+                                            </StackLayout>
+                                        </Frame>
+                                    </Grid>
+                                </DataTemplate>
+                            </CarouselView.ItemTemplate>
+                        </CarouselView>
+
+                        <!-- Indicador -->
+                        <IndicatorView x:Name="IndicatorView"
+                                       IndicatorColor="LightGray"
+                                       SelectedIndicatorColor="#2196F3"
+                                       HorizontalOptions="Center"
+                                       Margin="0,10" />
+
+                        <!-- Mensagem quando não há pacientes -->
+                        <StackLayout x:Name="StackSemPacientes" 
+                                   IsVisible="False" 
+                                   Padding="40"
+                                   Spacing="20">
+                            <Label Text="📅"
+                                   FontSize="60"
+                                   HorizontalOptions="Center" />
+                            <Label Text="Nenhuma consulta marcada"
+                                   FontSize="18"
+                                   FontAttributes="Bold"
+                                   TextColor="#6C757D"
+                                   HorizontalOptions="Center" />
+                            <Label Text="Não há atendimentos agendados para este dia."
+                                   FontSize="14"
+                                   TextColor="#6C757D"
+                                   HorizontalOptions="Center"
+                                   HorizontalTextAlignment="Center" />
+                        </StackLayout>
+
+                    </StackLayout>
+                </ScrollView>
+
+                <!-- Rodapé -->
+                <Grid Grid.Row="2" Padding="20,10" BackgroundColor="#F8F9FA">
+                    <Button Text="Fechar"
+                            BackgroundColor="#6C757D"
+                            TextColor="White"
+                            CornerRadius="10"
+                            HeightRequest="45"
+                            Clicked="OnFecharClicked" />
+                </Grid>
+
+            </Grid>
+        </Frame>
+    </Grid>
+
+</ContentPage>

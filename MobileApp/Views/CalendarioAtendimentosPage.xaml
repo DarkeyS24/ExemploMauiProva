@@ -17,11 +17,12 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
             <Button Grid.Column="0"
                     x:Name="BtnVoltar"
-                    Text="← Voltar"
+                    Text="← Sair"
                     BackgroundColor="Transparent"
                     TextColor="White"
                     FontSize="16"
@@ -35,6 +36,14 @@
                    FontAttributes="Bold"
                    HorizontalOptions="Center"
                    VerticalOptions="Center" />
+
+            <Button Grid.Column="2"
+                    x:Name="BtnDesconectar"
+                    Text="⚙️"
+                    BackgroundColor="Transparent"
+                    TextColor="White"
+                    FontSize="18"
+                    Clicked="OnDesconectarClicked" />
         </Grid>
 
         <!-- Seletor de Paciente -->

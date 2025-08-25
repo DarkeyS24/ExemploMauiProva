@@ -7,6 +7,7 @@ namespace MobileApp.Views
     public partial class CalendarioAtendimentosPage : ContentPage
     {
         private readonly AtendimentoService _atendimentoService;
+        private readonly AuthenticationService _authService;
         private DateTime _mesAtual;
         private ObservableCollection<Paciente> _pacientes;
         private Paciente? _pacienteSelecionado;
@@ -37,6 +38,7 @@ namespace MobileApp.Views
         {
             InitializeComponent();
             _atendimentoService = new AtendimentoService();
+            _authService = new AuthenticationService();
             _mesAtual = DateTime.Now;
             _pacientes = new ObservableCollection<Paciente>();
             _atendimentosDoMes = new List<Atendimento>();
@@ -139,7 +141,19 @@ namespace MobileApp.Views
             }
 
             frame.Content = label;
+            
+            // Adicionar gesture recognizer para clique
+            var tapGesture = new TapGestureRecognizer();
+            tapGesture.Tapped += async (sender, e) => await OnDiaClicado(dia.Data);
+            frame.GestureRecognizers.Add(tapGesture);
+            
             return frame;
+        }
+
+        private async Task OnDiaClicado(DateTime data)
+        {
+            var modal = new PacientesDoDiaModal(data);
+            await Navigation.PushModalAsync(modal);
         }
 
         private List<DiaCalendario> ObterDiasDoCalendario()
@@ -201,6 +215,19 @@ namespace MobileApp.Views
         private async void OnVoltarClicked(object sender, EventArgs e)
         {
             await Shell.Current.GoToAsync("//Login");
+        }
+
+        private async void OnDesconectarClicked(object sender, EventArgs e)
+        {
+            var result = await DisplayAlert("Desconectar", 
+                "Deseja desabilitar a funcionalidade 'mantenha-me conectado'?", 
+                "Sim", "Cancelar");
+
+            if (result)
+            {
+                await _authService.DesabilitarMantenhaConectadoAsync();
+                await DisplayAlert("Sucesso", "Funcionalidade desabilitada. Na próxima vez será necessário fazer login novamente.", "OK");
+            }
         }
 
         private void OnMesAnteriorClicked(object sender, EventArgs e)
