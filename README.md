@@ -22,13 +22,51 @@ Para apresentar o valor da nota dependera de um conversor que calcule se a avali
      <Label Text="{Binding Avaliacao.Comentario}" FontSize="12" TextColor="#6C757D" />
  </StackLayout>
 
-<!-- Converter -->
-  public class IsNotNullConverter : IValueConverter
- {
-     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-     {
-         return value != null;
-     }
+<!-- Criar o calendario utilizando combobox Plan B -->
+
+        private readonly HttpClient http;
+        private List<Atendimento> ateds;
+        
+        public MainPage(HttpClient http)
+        {
+            InitializeComponent();
+            this.http = http;
+            SetCombo();
+        }
+        
+        private async void SetCombo()
+        {
+            var response = await http.GetAsync("Atendimentos");
+            if (response.IsSuccessStatusCode)
+            {
+        var content = await response.Content.ReadAsStringAsync();
+        var list = JsonSerializer.Deserialize < List < Atendimento>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true});
+
+        if (list.Any())
+        {
+            ateds = new List<Atendimento>(list.Where(l => l.DataHora.Year == DateTime.Now.Year).ToList());  
+            pickerTxt.ItemsSource = list.Where(l => l.DataHora.Year == DateTime.Now.Year).Select(l => l.DataHora.ToString("dd/MM/yyyy")).ToList();
+            pickerTxt.SelectedIndex = 0;
+        }
+    }
+        }
+
+        private void IndexChanged(object sender, EventArgs e)
+        {
+            tipoData.Text = ateds[pickerTxt.SelectedIndex].DataHora < DateTime.Now ? "Passada": ateds[pickerTxt.SelectedIndex].DataHora == DateTime.Now ?  "Atual" : "Futura";
+            paciente.Text = ateds[pickerTxt.SelectedIndex].Idoso.IdNavigation.Nome;
+            tipo.Text = ateds[pickerTxt.SelectedIndex].Procedimento.Nome;
+            profissional.Text = ateds[pickerTxt.SelectedIndex].Cuidador.IdNavigation.Nome;
+        }
+
+        
+<!-- Class converter-->
+          public class IsNotNullConverter : IValueConverter
+         {
+             public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+             {
+                 return value != null;
+             }
 
      public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
      {
