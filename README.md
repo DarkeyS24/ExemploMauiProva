@@ -2,9 +2,39 @@
 
 ## Sistema de Atendimento para Cuidadores e Pacientes
 
-### 🔐 Funcionalidades de Login
+### 🔐 Funcionalidades de do dia Clicado
 
-O aplicativo possui um sistema robusto de autenticação com as seguintes características:
+Com o atendimento criar os scampos PossivelCancelar e PossivelAvaliar com o valor data
+
+        public bool PodeSerCancelado => DataAtendimento > DateTime.Now && Status == "Agendado";
+        public bool PodeSerAvaliado => DataAtendimento < DateTime.Now && Status == "Realizado" && Avaliacao == null;
+
+Para apresentar o valor da nota dependera de um conversor que calcule se a avaliçao é nula no campo IsVisible
+
+ <!-- Avaliação (se existir) -->
+ <StackLayout Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" 
+            IsVisible="{Binding Avaliacao, Converter={StaticResource IsNotNullConverter}}"
+            Orientation="Horizontal" 
+            Spacing="10" 
+            Margin="0,10,0,0">
+     <Label Text="⭐" FontSize="16" />
+     <Label Text="{Binding Avaliacao.Nota}" FontSize="14" FontAttributes="Bold" />
+     <Label Text="{Binding Avaliacao.Comentario}" FontSize="12" TextColor="#6C757D" />
+ </StackLayout>
+
+<!-- Converter -->
+  public class IsNotNullConverter : IValueConverter
+ {
+     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+     {
+         return value != null;
+     }
+
+     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+     {
+         throw new NotImplementedException();
+     }
+ }
 
 #### **Login com Dupla Autenticação**
 1. **Primeira Camada**: Login e senha do usuário
@@ -29,23 +59,6 @@ Existem **3 formas** de desabilitar ou reverter a funcionalidade de login autom�
 1. Ao fazer login novamente, simplesmente **não marque** a caixa "Mantenha-me conectado"
 2. Isso substituirá a configuração anterior
 
-#### **Método 3: Reinstalar o Aplicativo**
-1. Desinstale o aplicativo do dispositivo
-2. Reinstale novamente
-3. Todos os dados de login armazenados serão removidos
-
-### 👥 Usuários de Teste
-
-Para testar o aplicativo, utilize as seguintes credenciais:
-
-#### **Cuidadores**
-- **Login**: `joao.silva` | **Senha**: `123456`
-- **Login**: `ana.costa` | **Senha**: `123456`
-
-#### **Pacientes**
-- **Login**: `maria.santos` | **Senha**: `123456`
-- **Login**: `carlos.oliveira` | **Senha**: `123456`
-
 ### 🎯 Fluxo de Navegação
 
 #### **Para Cuidadores**
@@ -58,19 +71,5 @@ Login → PIN → Meus Atendimentos
 
 - As senhas são validadas através de um serviço de autenticação
 - O PIN de dupla autenticação é gerado aleatoriamente a cada login
-- Os dados de "mantenha-me conectado" são armazenados usando `SecureStorage` do .NET MAUI
+- Os dados de "mantenha-me conectado" são armazenados usando `Preferences.Default` do .NET MAUI
 - Possibilidade de logout e limpeza de dados salvos a qualquer momento
-
-### 🔄 Atualizações Futuras
-
-- Integração com banco de dados real
-- Recuperação de senha
-- Biometria (digital/face)
-- Notificações push
-- Sincronização em nuvem
-
----
-
-**Versão**: 1.0.0  
-**Desenvolvido em**: .NET MAUI 8.0  
-**Compatibilidade**: Android, iOS, Windows, macOS
